@@ -84,3 +84,11 @@ class CommentSerializer(serializers.ModelSerializer):
         if parent_comment and parent_comment.blog != attrs['blog']:
             raise serializers.ValidationError('The parent comment is not associated with the same blog.')
         return attrs
+
+    def validate_parent_comment(self, parent_comment):
+        user = self.context['request'].user
+
+        if parent_comment.author != user:
+            raise serializers.ValidationError("You can't reply to a comment that you didn't write.")
+        
+        return parent_comment

@@ -30,7 +30,8 @@ from myapp.views import (
     UserLoginView,
     BlogCreateView,
     BlogList,
-    CommentCreateView
+    CommentCreateView,
+    CommentReplyView
 
 )
 
@@ -41,8 +42,7 @@ urlpatterns = [
     path('api/register/', RegisteredUserView.as_view(), name='register'),
     path('api/login/', UserLoginView.as_view(), name='user-login'),
     path('api/blogpost/', BlogCreateView.as_view(), name='blogpost'),
-    path('api/comment/<int:blog_id>', CommentCreateView.as_view(), name='comment'),
+    path('api/comment/<int:blog_id>/', CommentCreateView.as_view(), name='comment'),
     path('blogs/', BlogList.as_view(), name='blog-list'),
-    # path('api/blogposts/<int:pk>/', BlogPostDetail.as_view(), name='blogpost_detail'),
-    # path('api/comments/', CommentList.as_view(), name='comment_list'),
+    path('api/reply/', CommentReplyView.as_view(), name='blog-list'),
 ]

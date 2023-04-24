@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from myapp.serializers import UserSerializer, UserLoginSerializer, CommentSerializer, BlogSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class RegisteredUserView(APIView):
     def post(self, request):
@@ -37,12 +38,15 @@ class BlogList(generics.ListAPIView):
 
 class CommentCreateView(generics.CreateAPIView):
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class CommentReplyView(generics.CreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 
